@@ -90,16 +90,21 @@ Make sure the Jenkins machine is able to do SSH into this machine. (Refer this l
 configure "Publish over SSH" plug-in  in Jenkins
 
 As part of post build action configure "send build artifacts over SSH"
+
 exec command = docker run  -dv /root/logs:/logs container1616/scheduler2 
 
 #### Second Option :: Do Docker run remotely
 
 On Test machine configure docker daemon for remote access
+
 sudo service docker stop
+
 docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 
 (above configuration is not recommended for proudction enviroment, to be used only for POC/testing purposes)
 
+
 Add following line for Jenkins build script
+
 docker -H tcp://<<Test machine ip address>>:2375 run  -dv /root/logs:/logs container1616/scheduler2 
 
 

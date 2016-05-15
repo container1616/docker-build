@@ -56,3 +56,4 @@ A simple Docker build life-cycle (github+jenkins) illustration. Here are the ste
 		paste above line at the end of sudoers file
 
 ### create *Test* machine in cloud (Jenkins will)
+

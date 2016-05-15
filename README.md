@@ -53,5 +53,6 @@ A simple Docker build life-cycle (github+jenkins) illustration. Here are the ste
 
 	- configure /etc/sudoers file, so that jenkins user can execute script without password
 		jenkins ALL=(ALL) NOPASSWD: ALL
-		paste at the end
+		paste above line at the end of sudoers file
 
+### create *Test* machine in cloud (Jenkins will)

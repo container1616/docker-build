@@ -55,9 +55,53 @@ A simple Docker build life-cycle (github+jenkins) illustration. Here are the ste
 		jenkins ALL=(ALL) NOPASSWD: ALL
 		paste above line at the end of sudoers file
 
-### create second *Test* machine in cloud 
-(Docker container on this machine. Jenkin will do the pull and run)
+
+
+### Create Jenkins job with following details
+
+	- Configure source code management with git repository url
+	- Configure build trigger Poll SCM 
+		Schedule "10 * * * *"
+	- Build trigger
+		Execute shell (to private artifactory)
+		mvn install
+		sudo docker build -t scheduler .
+		sudo docker login -u admin -p '££££££' https://container1616-docker-local.jfrog.io >> /dev/null
+		sudo docker tag scheduler container1616-docker-local.jfrog.io/scheduler1
+		sudo docker push container1616-docker-local.jfrog.io/scheduler1
+
+		Execute shell ( to public docker hub)
+		mvn install 
+		sudo docker build -t scheduler .
+		sudo docker login -u container1616 -p '££££££' >> /dev/null
+		sudo docker tag scheduler container1616/scheduler2
+		sudo docker push container1616/scheduler2
+
+
+### Create second *Test* machine in cloud 
+
+Docker container to run on this machine. Jenkin will do the image pull and docker run. 
 Make sure the Jenkins machine is able to do SSH into this machine. (Refer this link for more details http://www.linuxproblem.org/art_9.html). 
+
+### Deliver the software ( container) to Test machine
+
+#### First Option :: Jenkin to SSH into Test machine and do "docker run"
+
+configure "Publish over SSH" plug-in  in Jenkins
+
+As part of post build action configure "send build artifacts over SSH"
+exec command = docker run  -dv /root/logs:/logs container1616/scheduler2 
+
+#### Second Option :: Do Docker run remotely
+
+On Test machine configure docker daemon for remote access
+sudo service docker stop
+docker daemon -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375 
+(above configuration is not recommended for proudction enviroment, to be used only for POC/testing purposes)
+
+Add following line for Jenkins build script
+docker -H tcp://<<Test machine ip address>>:2375 run  -dv /root/logs:/logs container1616/scheduler2 
+
 
 
 

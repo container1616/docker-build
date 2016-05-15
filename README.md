@@ -55,5 +55,9 @@ A simple Docker build life-cycle (github+jenkins) illustration. Here are the ste
 		jenkins ALL=(ALL) NOPASSWD: ALL
 		paste above line at the end of sudoers file
 
-### create *Test* machine in cloud (Jenkins will)
+### create second *Test* machine in cloud 
+(Docker container on this machine. Jenkin will do the pull and run)
+Make sure the Jenkins machine is able to do SSH into this machine. (Refer this link for more details http://www.linuxproblem.org/art_9.html). 
+
+
 

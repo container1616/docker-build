@@ -22,4 +22,36 @@ A simple Docker build life-cycle (github+jenkins) illustration. Here are the ste
 
 # Steps Details
 
+### Get a machine on DigitalOcean or any other cloud 
+### Install Maven
+	sudo apt-get update
+	sudo apt-get install maven2 -y
+	
+### install open jdk8
+	sudo add-apt-repository ppa:openjdk-r/ppa
+	
+	sudo apt-get update
+	
+	sudo apt-get install openjdk-8-jdk -y
+
+	- if java is still pointing to old version, just delete the link and provide new link
+		cd /etc/alternatives
+		rm java ; ln -s /usr/lib/jvm/java-8-openjdk-amd64/bin/java java
+
+### install jenkins 
+  (For more info goto  
+    https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Ubuntu)
+	
+	wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+	sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+	sudo apt-get update
+	sudo apt-get install jenkins
+
+	- adding jenkins user to sudo and docker group
+		sudo adduser jenkins sudo
+		usermod -G docker jenkins
+
+	- configure /etc/sudoers file, so that jenkins user can execute script without password
+		jenkins ALL=(ALL) NOPASSWD: ALL
+		paste at the end
 
